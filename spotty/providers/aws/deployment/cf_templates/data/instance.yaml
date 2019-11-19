@@ -198,18 +198,20 @@ Resources:
               content: !Sub |
                 #!/bin/bash -e
 
-                DEVICE_LETTERS=(f g h i j k l m n o p)
+                DEVICE_LETTERS=(/dev/xvdf /dev/xvdg /dev/xvdh /dev/xvdi /dev/xvdj /dev/xvdk /dev/xvdl /dev/xvdm /dev/xvdn /dev/xvdo /dev/xvdp /dev/nvme1n1)
                 MOUNT_DIRS=(${VolumeMountDirectories})
 
                 for i in ${!!MOUNT_DIRS[*]}
                 do
-                  DEVICE=/dev/xvd${!DEVICE_LETTERS[$i]}
-                  MOUNT_DIR=${!MOUNT_DIRS[$i]}
+                  DEVICE=${!DEVICE_LETTERS[$i]}
+                  if [ -f $DEVICE ] ; then
+                    MOUNT_DIR=${!MOUNT_DIRS[$i]}
 
-                  blkid -o value -s TYPE $DEVICE || mkfs -t ext4 $DEVICE
-                  mkdir -p $MOUNT_DIR
-                  mount $DEVICE $MOUNT_DIR
-                  resize2fs $DEVICE
+                    blkid -o value -s TYPE $DEVICE || mkfs -t ext4 $DEVICE
+                    mkdir -p $MOUNT_DIR
+                    mount $DEVICE $MOUNT_DIR
+                    resize2fs $DEVICE
+                  fi
                 done
           commands:
             mount_volumes:

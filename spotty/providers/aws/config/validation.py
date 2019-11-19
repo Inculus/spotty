@@ -72,14 +72,15 @@ def is_gpu_instance(instance_type: str):
         'p2.xlarge', 'p2.8xlarge', 'p2.16xlarge',
         'p3.2xlarge', 'p3.8xlarge', 'p3.16xlarge', 'p3dn.24xlarge',
         'g3s.xlarge', 'g3.4xlarge', 'g3.8xlarge', 'g3.16xlarge',
+        'g4dn.xlarge', 'g4dn.2xlarge', 'g4dn.4xlarge', 'g4dn.8xlarge',
+        'g4dn.16xlarge', 'g4dn.12xlarge'
     ]
 
 
 def is_nitro_instance(instance_type):
     # a list of Nitro-based instances from:
     # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html#ec2-nitro-instances
-    nitro_prefixes = ['a1', 'c5', 'c5d', 'c5n', 'i3en', 'm5', 'm5a', 'm5ad', 'm5d', 'r5', 'r5a', 'r5ad', 'r5d',
-                         't3', 't3a', 'z1d']
-    nitro_types = ['p3dn.24xlarge', 'i3.metal', 'u-6tb1.metal', 'u-9tb1.metal', 'u-12tb1.metal']
+    nitro_prefixes = []
+    nitro_types = []
 
     return any(instance_type.startswith(prefix + '.') for prefix in nitro_prefixes) or instance_type in nitro_types
